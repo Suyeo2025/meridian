@@ -120,7 +120,9 @@ function guardCredentialWrites(store: CredentialStore): CredentialStore {
       if (isCredentialsReadOnly()) {
         return refuseCredentialWrite("credential-store", store.refreshKey ?? "unknown-store")
       }
-      return store.write(credentials)
+      const written = await store.write(credentials)
+      if (written && store.refreshKey) credentialFactsCache.delete(store.refreshKey)
+      return written
     },
   }
 }
