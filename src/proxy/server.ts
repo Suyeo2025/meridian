@@ -46,7 +46,7 @@ import { AdmissionHold, parseDrainOptions, type AdmissionReservation } from "./a
 import { DrainBodyError, readDrainBody } from "./drainBody"
 import { isGenerationSubmission, onGenerationResponseSettled } from "./generationAdmission"
 import { closeServerWithGracePeriod, trackServerConnections } from "./shutdown"
-import { fetchOAuthUsage, fetchOAuthUsageResult, toUsageEntry, peekOAuthUsage } from "./oauthUsage"
+import { fetchOAuthUsage, fetchOAuthUsageResult, toUsageEntry, peekOAuthUsage, clearOAuthUsageForProfile } from "./oauthUsage"
 import { resolveSdkWorkingDirectory } from "./cwd"
 import type { Context } from "hono"
 import { DEFAULT_PROXY_CONFIG, resolveBackendConfig } from "./types"
@@ -97,7 +97,7 @@ import { detectSupervision } from "./supervision"
 import type { RequestMetric } from "../telemetry"
 import { canRecoverCapturedToolUses, uncapturedRecoveryVeto, streamedToolBlockVeto, cliRejectedToolResults, type StreamedToolBlockRecord, type UncapturedDeliveryVeto, classifyError, extractSdkTermination, formatSdkTermination, classifyResumeRefusal, isRateLimitError, isExtraUsageRequiredError, isExpiredTokenError, isAccountFailoverError, isQuotaRefusal, isOutputTokenCapExceeded } from "./errors"
 import { createSseRelayStream, relayStreamAttempt } from "./sseFailureSniff"
-import { refreshOAuthToken, ensureFreshToken, startBackgroundRefresh, stopBackgroundRefresh, createPlatformCredentialStore, readStoredCredentialSnapshot, getAuthRenewalStatus, getStoredPlanFields, renewalStatusFor, resolveRenewalWarnDays, type CredentialStore, type StoredPlanFields } from "./tokenRefresh"
+import { refreshOAuthToken, ensureFreshToken, startBackgroundRefresh, stopBackgroundRefresh, createPlatformCredentialStore, readStoredCredentialSnapshot, getAuthRenewalStatus, getStoredPlanFields, renewalStatusFor, resolveRenewalWarnDays, resetAuthRenewalCache, type CredentialStore, type StoredPlanFields } from "./tokenRefresh"
 import { planAllowance } from "./planAllowance"
 import { isCredentialsReadOnly, logCredentialsModeBanner } from "./credentialsMode"
 import {
@@ -115,7 +115,7 @@ import { describeBuildDrift } from "./buildInfo"
 import { buildRuntime } from "./buildRuntime"
 import { getLatestVersion, isUpdateCheckEnabled, startUpdateCheck, stopUpdateCheck } from "./updateCheck"
 import { createAuthStatusOwner } from "./authStatusOwnership"
-import { mapModelToClaudeModel, resolveClaudeExecutableAsync, resolveSdkModelDefaults, explicitModelPin, CANONICAL_SONNET_MODEL, isClosedControllerError, getClaudeAuthStatusAsync, getAuthCacheInfo, expireAuthStatusCache, getResolvedClaudeExecutableInfo, hasExtendedContext, stripExtendedContext, recordExtendedContextUnavailable, recordExtendedContextRateLimited, subscriptionIncludesExtendedContext } from "./models"
+import { mapModelToClaudeModel, resolveClaudeExecutableAsync, resolveSdkModelDefaults, explicitModelPin, CANONICAL_SONNET_MODEL, isClosedControllerError, getClaudeAuthStatusAsync, getAuthCacheInfo, expireAuthStatusCache, getResolvedClaudeExecutableInfo, hasExtendedContext, stripExtendedContext, recordExtendedContextUnavailable, recordExtendedContextRateLimited, resetExtendedContextUnavailable, subscriptionIncludesExtendedContext } from "./models"
 import { livenessReport, readinessReport, renderProbe } from "./probes"
 import { UpstreamReachability, DEFAULT_OVERRIDE_TTL_MS, MAX_OVERRIDE_TTL_MS, unreachableDetail, withReachability } from "./upstreamReachability"
 import { resolveReachabilityThresholds } from "./upstreamReachabilityConfig"
@@ -10468,6 +10468,19 @@ function createProxyServerWithAuthOwner(config: Partial<ProxyConfig>, authOwner:
     return c.json(status)
   })
 
+  // Clear in-memory routing-health and quota caches observed under a profile's
+  // previous credential so a re-authenticated or explicitly refreshed profile
+  // can be probed again immediately without waiting for a stale reset deadline
+  // or restarting Meridian (#1385).
+  function clearStaleProfileHealth(profileId: string): void {
+    priorityExhaustion.forget(profileId)
+    spentProfiles.forget(profileId)
+    rateLimitStore.clear(profileId)
+    clearOAuthUsageForProfile(profileId)
+    resetExtendedContextUnavailable(profileId)
+    resetAuthRenewalCache()
+  }
+
   app.post("/profiles/login/complete", async (c) => {
     let body: { loginId?: string; code?: string }
     try {
@@ -10491,6 +10504,7 @@ function createProxyServerWithAuthOwner(config: Partial<ProxyConfig>, authOwner:
     // The auth-status cache holds a 60s "not logged in" answer for this profile;
     // drop it so /profiles/list reflects the login on the UI's next poll.
     expireAuthStatusCache()
+    clearStaleProfileHealth(result.profileId)
     claudeLog("profile.login_completed", {
       profile: result.profileId,
       userAgent: c.req.header("user-agent")?.slice(0, 120) ?? null,
@@ -10522,6 +10536,7 @@ function createProxyServerWithAuthOwner(config: Partial<ProxyConfig>, authOwner:
       return c.html(renderLoginCallbackPage({ ok: false, message: result.message }), result.status as 400)
     }
     expireAuthStatusCache()
+    clearStaleProfileHealth(result.profileId)
     claudeLog("profile.login_completed", { profile: result.profileId, via: "callback" })
     plog(`[PROXY] Profile login completed for "${result.profileId}" (browser redirect)`)
     return c.html(renderLoginCallbackPage({ ok: true, profileId: result.profileId }))
@@ -10588,6 +10603,7 @@ function createProxyServerWithAuthOwner(config: Partial<ProxyConfig>, authOwner:
     // the list-wide cache does — drop it so the new card renders authenticated
     // on the UI's next poll rather than after the 60s TTL.
     expireAuthStatusCache()
+    clearStaleProfileHealth(result.profileId)
     claudeLog("profile.add_completed", {
       profile: result.profileId,
       userAgent: c.req.header("user-agent")?.slice(0, 120) ?? null,
@@ -10649,11 +10665,11 @@ function createProxyServerWithAuthOwner(config: Partial<ProxyConfig>, authOwner:
     const store = credentialStoreForProfile(profile)
     const success = store ? await refreshOAuthToken(store) : false
     if (success) {
-      // Drop this profile's rate-limit snapshot — its quotas were observed
-      // under the previous credential. Scoped to the profile actually
-      // refreshed; other accounts' snapshots are untouched. The next SDK
-      // call repopulates.
-      rateLimitStore.clear(profile.id)
+      // Drop this profile's rate-limit snapshot and routing-health bench —
+      // its quotas and refusals were observed under the previous credential.
+      // Scoped to the profile actually refreshed; other accounts' snapshots
+      // are untouched. The next SDK call repopulates (#1385).
+      clearStaleProfileHealth(profile.id)
       return c.json({ success: true, message: "OAuth token refreshed successfully", profile: profile.id })
     }
     return c.json(
