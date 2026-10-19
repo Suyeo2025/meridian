@@ -39,7 +39,7 @@ and prior owner holds remain in force.
 | [#1406](https://github.com/rynfar/meridian/pull/1406) | Accept with corrections | Make passthrough CLAUDE.md Project/Full limitations truthful in UI/type/Crush docs. Prove fresh and previously contaminated resume isolation through actual plugin-qualified OpenCode. Does not resolve agent-switch issue #1404. |
 | [#1394](https://github.com/rynfar/meridian/pull/1394), [#1395](https://github.com/rynfar/meridian/pull/1395), [#1397](https://github.com/rynfar/meridian/pull/1397) | Strong candidates after live gates | No surviving implementation defect in async process identity, client cwd, or abort-link ownership. Missing exact-head affected-client/model/platform proof; forwarded-source attribution hold. |
 | [#1399](https://github.com/rynfar/meridian/pull/1399) | Accept with correction; local/live gates open | Signed 4644524c/1372390c correct remaining drain work. Red/green, focused, type/build and final-head CI pass; full-local gate retains 89 failures. Supplementary 464 passes used Bun 1.3.14. Actual macOS load acceptance remains open. |
-| [#1400](https://github.com/rynfar/meridian/pull/1400) | Fix before merge | Reproduced 10-minute advertised pool wait when effective account/model benches require at least three hours. Calculate from effective marks, add repeated-shorter/overlap controls; natural actual-account live gate remains. |
+| [#1400](https://github.com/rynfar/meridian/pull/1400) | Accept with correction; final gates pending | Signed cf399a7d corrects effective pool wait, retained scope and expiry. 418 guarded focused cases and type/build pass on Bun 1.3.11; target CI passes including test. Full local/live gates remain. See retry-after correction record. |
 | [#1401](https://github.com/rynfar/meridian/pull/1401) | Partial fix, scope/evidence hold | Useful stale-copy guard; newer-map eviction/read failure still loses assistant answers. Need explicit accepted limited scope or own-copy gap backstop and real A→B→A/rewind controls. |
 | [#1220](https://github.com/rynfar/meridian/pull/1220) | Accept direction, corrections required | Three known snapshot/revocation/cache-epoch fixes remain absent after rebase; original residual E41 cache failure unexplained. #1244 contract already approved. |
 | [#1243](https://github.com/rynfar/meridian/pull/1243) | Defer submitted SQL implementation | Mutable authority, legacy retirement race and live-lease overwrite persist; automatic default migration conflicts with already approved opt-in/offline #1277. Depends on #1220. |
@@ -272,7 +272,9 @@ Authors, dates, signature identities, earlier source mappings and adaptation
 comparisons. In that historical snapshot, fourteen commits are authored by
 eamonster27, 42 by passabilities and two by rynfar; its signatures are valid.
 The [60-commit addendum](forwarded-credit-1399-addendum.md) retains all 58 and
-adds two signed #1399 corrections. All 14 earlier source identities
+adds two signed #1399 corrections. The [61-commit addendum](forwarded-credit-1400-addendum.md)
+adds only #1400's signed correction and qualifies commit-rollup CI scope.
+All 14 earlier source identities
 and dates match their forwarded copies, including timezone, but original SHAs
 and port/carve contents differ. A normal merge preserves the current objects;
 it does not retroactively restore earlier objects or source-author signatures.
@@ -303,8 +305,9 @@ isolated configurations.
 
 #1399's active-sweep shutdown correction is now pushed and independently reviewed;
 full-local and actual-model load gates remain open. Follow-up work on the
-mocked-SDK test boundary and #1400 Retry-After is pending. See the
-[current follow-up](shutdown-and-resolver-followup.md) for exact results and scope.
+mocked-SDK test boundary is pending. #1400's signed Retry-After correction is now
+pushed with [focused evidence and retained gates](retry-after-correction.md).
+See the [shutdown follow-up](shutdown-and-resolver-followup.md) for those earlier results.
 
 The [independent evidence review](evidence-review.md) and
 [follow-up](evidence-review-addendum.md) cover the current record. The follow-up

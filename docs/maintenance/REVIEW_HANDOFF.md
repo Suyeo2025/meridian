@@ -74,12 +74,19 @@ was preserved. [Detailed queue, exact heads and review findings](evidence/backlo
   artifact hashes match. No product PR merged. A synthetic no-model investigation
   localizes the common resolver quarantine cascade across #1399/#1411 while
   retaining the unknown initiating witness. Separate tasks are fixing the
-  mocked-SDK test boundary and #1400 Retry-After; no live gate waived.
+  mocked-SDK test boundary; no live gate waived. #1400 now has signed `cf399a7d`
+  on its original branch, preserving all seven earlier commits. Effective wait,
+  retained-scope and expiry controls pass 418 focused cases on Bun 1.3.11;
+  type/build and all eight final-head target CI checks pass. Full local/live
+  gates remain pending.
+  [Retry-After correction record](evidence/backlog-20261018/retry-after-correction.md).
+  Fresh credit audit now records 61 introduced objects, retaining all earlier
+  60 unchanged. Commit-object rollup SUCCESS can be fork-only; it is not proof
+  of required target PR CI. Refresh actual contexts/test before any merge.
 - #1407/#1403 source review is favorable but actual affected-client/model proof
   remains open. #1406 needs truthful settings documentation and resumed-session
-  isolation proof. #1399's correction retains local/live gates; #1400 effective
-  Retry-After correction is underway. Older storage/lifecycle/draft/owner/no-review
-  holds are preserved.
+  isolation proof. #1399/#1400 corrections retain their local/live gates. Older
+  storage/lifecycle/draft/owner/no-review holds are preserved.
 - No release or external comment is authorized. Release-only OpenCode scrub #20
   and Pi scrub #15 also have no exact-head checks. No queue-clear claim.
 
