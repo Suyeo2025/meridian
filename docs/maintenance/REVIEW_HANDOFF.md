@@ -23,6 +23,30 @@ the contributor's PR is what merges:
 Corrections to past PRs (reopening, comment edits, release notes, any rewrite of
 `main`) are the owner's decisions in #1363. Do not start them from this note.
 
+## Backlog review and corrections (2026-10-18 MDT / 2026-10-19 UTC)
+
+Refreshed `origin/main` `095b4869b` and the paginated live queues: 29 Meridian
+PRs plus two scrub release PRs across six managed repositories. All five scrub
+repos have zero open issues/contributor PRs. The original dirty desktop checkout
+was preserved. [Detailed queue, exact heads and review findings](evidence/backlog-20261018/README.md).
+
+- Corrections in progress on contributors' own PRs: #1411 all-hidden provider URL
+  reload, #1410 schema-order-sensitive shared tool definitions, and #1396 durable
+  system-instruction lineage safety. No cherry-picked integration PRs.
+- #1409's cleanup change passes independent safety review, 21 focused tests,
+  typecheck/build and a discriminating unchanged-main/candidate leak probe.
+  Full local suite has failures under investigation; isolated passing controls
+  are not treated as a repaired full gate.
+- #1398 warning is being validated through actual Bun and Node startup. Eight
+  forwarded PRs #1394–#1401 carry another verified contributor's source commits;
+  source-Author policy needs owner handling before any of those merges.
+- #1407/#1403 source review is favorable but actual affected-client/model proof
+  remains open. #1406 needs truthful settings documentation and resumed-session
+  isolation proof. #1399 shutdown sweep and #1400 effective Retry-After need
+  corrections. Older storage/lifecycle/draft/owner/no-review holds are preserved.
+- No release or external comment is authorized. Release-only OpenCode scrub #20
+  and Pi scrub #15 also have no exact-head checks. No queue-clear claim.
+
 ## Contributor merges under the new process (2026-10-13)
 
 Each landed as the contributor's own PR. Author is the output of
