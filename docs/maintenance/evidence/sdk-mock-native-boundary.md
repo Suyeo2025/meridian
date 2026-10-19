@@ -1,5 +1,42 @@
 # SDK-mocked HTTP native boundary
 
+## Follow-up: worker isolation and failure diagnostics — 2026-10-19
+
+The earlier results below describe head `8ffbe0c2`. Its CI passed, but the
+independent parent `npm test` stopped at invocation 1 with 6,480 pass, 36 skip
+and one cross-process worker timeout. The [original failed-run receipt](sdk-mock-followup-20261019/previous-parent-gate.json)
+and the PR preserve its full-log hash and failure/footer excerpts. That failure
+and the earlier benchmark failure are not retroactively reclassified as passing.
+
+Follow-up controls reproduced two concrete fixture defects. An exception before
+HTTP setup lost its cause behind a generic SDK-start timeout (new control red).
+An inherited parent API key returned HTTP 401 before SDK admission (separate
+control red). `bun -e` workers do not run the test preload. Workers now remove
+the parent's Meridian/legacy environment namespace and use a fresh, shared
+configuration directory inside their owned test root. They explicitly retain
+the preload's existing SDK-double process-gate setting; no production setting,
+guard or source changes. The shared session store and canonical SDK config paths
+remain common across workers.
+
+An intermediate experiment gave every worker a different config directory and
+failed two non-streaming Pi continuations with HTTP 500. That receipt is retained
+as rejected iteration evidence. Restoring one shared owned config directory
+passed all 13 cross-process controls; final focused validation passed 22 tests
+across the worker and store benchmark files, with zero failures. Do not add
+overlapping focused counts together.
+
+Startup exceptions now reach the owned event file, early completed responses
+report their status/body, and timeout messages retain observed lifecycle facts
+before cleanup deletes the fixture. The benchmark logs each sample's wall time,
+synchronous work time and process CPU time. Existing five-second event waits,
+overall test deadlines, sample counts and the 75% benchmark assertion remain
+unchanged. These diagnostics do not prove why the earlier unexplained timing
+observations occurred. [Selected red/green receipts and hashes](sdk-mock-followup-20261019/manifest.json)
+preserve the controls. Full local and final-head CI validation must pass on the
+follow-up before acceptance; no other contributor/client/release gate is cleared.
+
+## Earlier implementation record
+
 This is test infrastructure only. It does not fix a demonstrated production
 resolver defect or establish the missing event that initiated the previous
 #1399/#1411 full-suite cleanup cascades. Their original logs did not identify
