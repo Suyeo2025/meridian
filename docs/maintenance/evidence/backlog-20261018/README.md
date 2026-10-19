@@ -27,7 +27,7 @@ and prior owner holds remain in force.
 | [#1409](https://github.com/rynfar/meridian/pull/1409) | Accept test infrastructure change, pending final validation disposition | Independent safety review, focused tests and exact before/after leak probe pass; typecheck/build pass. Local full-suite failures under investigation. See below. |
 | [#1411](https://github.com/rynfar/meridian/pull/1411) | Accept with correction | Reproduced all-hidden URL state becoming visible after reload. Signed correction bd08c43d pushed; 50 focused tests and browser proof pass. Full local suite remains red (90 failures); corrected-head CI green; local red gate unresolved. |
 | [#1410](https://github.com/rynfar/meridian/pull/1410) | Accept with correction | Real SDK tools/list confirms canonical cache digest merges schemas whose advertised property order differs. Correction 423477f1 pushed; 6,948 full-suite tests and exact-head CI pass. Real OpenCode/plugin and cache/heap acceptance remain separate gates. |
-| [#1396](https://github.com/rynfar/meridian/pull/1396) | Fix before merge | P1: truncating all post-cache-breakpoint blocks hides durable instruction edits. Corrections db52bfd0/a40be179 pushed; 6,961 full-suite tests pass. Actual Fable/client acceptance, corrected-head CI and forwarded-source attribution remain open. |
+| [#1396](https://github.com/rynfar/meridian/pull/1396) | Accept with correction; live gate open | P1 durable-instruction loss corrected by db52bfd0/a40be179; 6,961 full-suite tests and corrected-head CI pass. Actual Fable/client acceptance and final forwarded Author verification remain open. |
 | [#1398](https://github.com/rynfar/meridian/pull/1398) | Validate warning change | Actual Bun/Node startup verification passes; full suite remains red (four unresolved failures). This warns; it does not fix underlying Bun disconnect handling. Forwarded-source attribution remains open. |
 | [#1407](https://github.com/rynfar/meridian/pull/1407) | Accept code scope; hold acceptance evidence | No surviving source defect; actual AgentLink source consumes error after length finish. Need actual affected-client/model before/after error propagation and ordinary truncation control, plus local final gates. |
 | [#1403](https://github.com/rynfar/meridian/pull/1403) | Accept code scope; hold acceptance evidence | No surviving source defect; downstream nested documents/replay supported. Need a complete PDF receipt through real message/tool-output JSON/SSE flows and actual affected client/model (unspecified by contributor), plus local gates. Header-only mapping fixture is not model PDF proof. |
@@ -149,7 +149,9 @@ requests and four exact reminder disappearances. Opus-with-no-reminder fails
 by default and passes only as an explicitly labeled negative control.
 These are loopback scripted-provider runs, **not actual Fable model calls**.
 Both corrections are pushed. Full `npm test` exits 0: **6,961 pass / 36 skip /
-0 fail**; corrected-head CI and live affected-model acceptance remain pending;
+0 fail**; all eight applicable corrected-head CI checks pass, including
+[test](https://github.com/rynfar/meridian/actions/runs/39203482443/job/117901207992).
+Live affected-model acceptance remains pending;
 reminder-only traffic has not been observed in the real client gate. Existing
 committed tests and `scripts/e2e-claude-code-system-turns.mjs` retain the probes.
 [Complete validation](1396-validation.md) and [test totals](1396-test-summary.json)
@@ -248,8 +250,12 @@ it is a bounded exception to the current squash default. On 2026-10-18 MDT /
 route (recommended)”** for #1394–#1401, retaining all tests, live verification,
 CI and signature requirements. The independently reviewed workflow change is
 [#1413](https://github.com/rynfar/meridian/pull/1413), head `15f35f173d70d11c111da92081855bc36082ab0c`.
-It is ready for review; final-head CI is pending before policy merge. This
-authorization does not waive any product gate or authorize cherry-picking,
+It merged as `f81d9d8dbc7ff0cd4faf2c48197b46f829921b77` at 2026-10-19
+05:31:34 UTC after final-head CI passed, using the ordinary signed squash for
+this maintainer-authored instruction PR. The signed landed tree exactly matches
+the reviewed tree; [merge verification](policy-merge.json) records the base,
+head, checks, signature and tree. The forwarded route itself preserves commits
+with `--merge`. This authorization does not waive any product gate or authorize cherry-picking,
 history rewriting, source PR closure, release publication or external comments.
 The [complete credit audit](forwarded-credit-audit.md) and
 [58-commit manifest](forwarded-credit-manifest.json) preserve exact current
@@ -264,9 +270,15 @@ The manifest SHA-256 is
 The existing attribution tool conflates mixed-source emails under the opener;
 its aggregate is not used as credit proof. The approved route requires per-commit
 ancestry/Author verification and a truthful report instead.
-No forwarded product PR has merged. Their remaining product gates and policy
-adoption must complete before landing; the manifest must be refreshed against
+No forwarded product PR has merged. Their remaining product gates must complete
+before landing; the manifest must be refreshed against
 the exact source head and current main before each merge.
+
+The post-merge queue refresh found no additional Meridian PR. Drafts #1359 and
+#1347 have advanced to `694df9fd46f484ba60458df4338ddb767b4646d2` and
+`3103a6efe8408d52dc3b75b27915c9d079c72797`; the earlier reports are historical
+review snapshots, not reviews of these new heads. Their existing draft and
+platform/account acceptance holds remain.
 
 ## Live verification in progress
 

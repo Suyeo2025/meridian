@@ -34,8 +34,8 @@ was preserved. [Detailed queue, exact heads and review findings](evidence/backlo
   all-hidden provider URL reload, #1410 `423477f1` schema-order-sensitive shared
   tool definitions, and #1396 `db52bfd0`/`a40be179` durable system-instruction
   lineage safety plus a discriminating client gate. No maintainer integration PRs.
-  #1410 full local 6,948 pass and final-head CI green; #1396 full local 6,961
-  pass with final-head CI pending. Their actual-client/model/heap gates remain.
+  #1410 full local 6,948 pass and #1396 full local 6,961 pass; both final-head
+  CI rollups are green. Their actual-client/model/heap gates remain.
   #1411 passes 50 focused/browser/type/build checks and corrected-head CI,
   but full local has 90 unresolved failures and must not merge.
 - #1409's cleanup change passes independent safety review, 21 focused tests,
@@ -49,9 +49,12 @@ was preserved. [Detailed queue, exact heads and review findings](evidence/backlo
   Author credit. The owner explicitly approved the commit-preserving route for
   #1394–#1401 on 2026-10-18 MDT / 2026-10-19 UTC, with all normal tests, live,
   CI and signature gates retained. The independently reviewed workflow change
-  [#1413](https://github.com/rynfar/meridian/pull/1413) is ready at `15f35f17`,
-  awaiting final-head CI before adoption. Refresh its status and the per-commit
-  manifest before any product merge; approval does not waive acceptance gates.
+  [#1413](https://github.com/rynfar/meridian/pull/1413) passed final-head CI at
+  `15f35f17` and merged as signed `f81d9d8db`; its landed tree exactly matches
+  the reviewed tree. [Merge proof](evidence/backlog-20261018/policy-merge.json).
+  The bounded route is adopted. Refresh the per-commit manifest before each
+  product merge; approval does not waive acceptance gates. No forwarded product
+  PR has merged.
 - Isolated follow-up tasks are running actual Claude Code/Fable acceptance for
   #1396 and matching-plugin OpenCode plus bounded SDK heap/cache acceptance for
   #1410. Their results are pending, not completed live proof.
