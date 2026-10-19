@@ -55,9 +55,14 @@ was preserved. [Detailed queue, exact heads and review findings](evidence/backlo
   The bounded route is adopted. Refresh the per-commit manifest before each
   product merge; approval does not waive acceptance gates. No forwarded product
   PR has merged.
-- Isolated follow-up tasks are running actual Claude Code/Fable acceptance for
-  #1396 and matching-plugin OpenCode plus bounded SDK heap/cache acceptance for
-  #1410. Their results are pending, not completed live proof.
+- Isolated live follow-ups completed; [sanitized proof and open gates](evidence/backlog-20261018/live-verification.md).
+  #1410's bounded 230-tool/12-owner heap falls 262.37→44.58 MiB and catalogs
+  match; actual plugin-qualified OpenCode 2.0.21 read/continuation passes.
+  Its E41 model qualification failed on mixed 5.5/4.8 SDK annotations; remaining
+  E41/extended V2 gates were not run. #1396 witnesses actual native reminder
+  disappearances and preserved continuations versus baseline replay, but mixed
+  Fable/4.8 identities, failed cache floors and missing controls retain acceptance.
+  No further inference was used to explain these failures or obtain green runs.
   A separate #1399 task is correcting the active-sweep/idle-close interleaving;
   correction and local checks are pending, with no actual-model load run claimed.
 - #1407/#1403 source review is favorable but actual affected-client/model proof

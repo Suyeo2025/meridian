@@ -26,7 +26,7 @@ and prior owner holds remain in force.
 | --- | --- | --- |
 | [#1409](https://github.com/rynfar/meridian/pull/1409) | Accept test infrastructure change, pending final validation disposition | Independent safety review, focused tests and exact before/after leak probe pass; typecheck/build pass. Local full-suite failures under investigation. See below. |
 | [#1411](https://github.com/rynfar/meridian/pull/1411) | Accept with correction | Reproduced all-hidden URL state becoming visible after reload. Signed correction bd08c43d pushed; 50 focused tests and browser proof pass. Full local suite remains red (90 failures); corrected-head CI green; local red gate unresolved. |
-| [#1410](https://github.com/rynfar/meridian/pull/1410) | Accept with correction | Real SDK tools/list confirms canonical cache digest merges schemas whose advertised property order differs. Correction 423477f1 pushed; 6,948 full-suite tests and exact-head CI pass. Real OpenCode/plugin and cache/heap acceptance remain separate gates. |
+| [#1410](https://github.com/rynfar/meridian/pull/1410) | Accept with correction; live gates open | Correction 423477f1, 6,948 full-suite tests and exact-head CI pass. Bounded real-SDK heap/catalog proof and actual matching-plugin OpenCode read/continuation pass. E41 model qualification failed; remaining E41/extended V2 gates stay open. |
 | [#1396](https://github.com/rynfar/meridian/pull/1396) | Accept with correction; live gate open | P1 durable-instruction loss corrected by db52bfd0/a40be179; 6,961 full-suite tests and corrected-head CI pass. Actual Fable/client acceptance and final forwarded Author verification remain open. |
 | [#1398](https://github.com/rynfar/meridian/pull/1398) | Validate warning change | Actual Bun/Node startup verification passes; full suite remains red (four unresolved failures). This warns; it does not fix underlying Bun disconnect handling. Forwarded-source attribution remains open. |
 | [#1407](https://github.com/rynfar/meridian/pull/1407) | Accept code scope; hold acceptance evidence | No surviving source defect; actual AgentLink source consumes error after length finish. Need actual affected-client/model before/after error propagation and ordinary truncation control, plus local final gates. |
@@ -133,7 +133,9 @@ independent transports, tool calls, survivor access after closing siblings and
 input immutability. Zero model calls. Full `npm test` also exits 0: **6,948 pass / 36 skip / 0 fail** across
 24 isolated stages. All eight exact-head CI checks pass at `423477f1`, including
 [test run 39202398097](https://github.com/rynfar/meridian/actions/runs/39202398097).
-Actual OpenCode/plugin/E41 and realistic heap-plateau proof remain open.
+The follow-up bounded heap/catalog proof and actual matching-plugin OpenCode
+read/continuation pass; E41 model qualification failed and other live gates remain
+open. See [live follow-up](live-verification.md) for exact scope and limitations.
 [Complete validation](1410-validation.md) and [test totals](1410-test-summary.json)
 retain the executable checks and source/final identities.
 
@@ -151,8 +153,10 @@ These are loopback scripted-provider runs, **not actual Fable model calls**.
 Both corrections are pushed. Full `npm test` exits 0: **6,961 pass / 36 skip /
 0 fail**; all eight applicable corrected-head CI checks pass, including
 [test](https://github.com/rynfar/meridian/actions/runs/39203482443/job/117901207992).
-Live affected-model acceptance remains pending;
-reminder-only traffic has not been observed in the real client gate. Existing
+Live affected-model acceptance remains open. Actual native traffic now witnesses
+prefix-plus-reminder disappearance and preserved continuations, but mixed model
+identities, cache failures and missing controls remain. Reminder-only traffic
+has not been observed. See [live follow-up](live-verification.md). Existing
 committed tests and `scripts/e2e-claude-code-system-turns.mjs` retain the probes.
 [Complete validation](1396-validation.md) and [test totals](1396-test-summary.json)
 preserve exact scripted-client controls and the red-before-fix record.
@@ -280,15 +284,15 @@ The post-merge queue refresh found no additional Meridian PR. Drafts #1359 and
 review snapshots, not reviews of these new heads. Their existing draft and
 platform/account acceptance holds remain.
 
-## Live verification in progress
+## Live verification and remaining work
 
-Two separate, isolated follow-up tasks are running: actual Claude Code/Fable
-subagent acceptance for #1396, and matching-plugin OpenCode acceptance plus a
-bounded real-SDK cache/heap probe for #1410. They begin at published correction
-heads `a40be179` and `423477f1`, respectively. Their pending work does not count
-as completed acceptance; unsupported model access or missing runtime witnesses
-remain explicit gates. No paid Extra Usage or account/configuration changes
-are inferred from this work.
+Two isolated follow-up tasks completed at `a40be179` and `423477f1`.
+[Their retained evidence and failed/missing gates](live-verification.md) distinguish
+bounded heap/catalog and client-flow success from incomplete acceptance. Both
+observed mixed SDK model identities, and #1396 also failed cache floors.
+Further inference stopped. No paid Extra Usage or changes to the owner's
+accounts/configuration were used to obtain a passing result; fixtures used
+isolated configurations.
 
 A third isolated task is correcting #1399's active-sweep shutdown interleaving
 and adding a before/after regression. Its source correction and local checks
