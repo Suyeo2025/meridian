@@ -132,6 +132,9 @@ existing source author's commit in this route.
    inspect its actual Author/AuthorDate with `git show --no-patch --format=fuller <SHA>`.
    Preserve the manifest and results in the review handoff. The merge commit's
    Author alone and a green Attribution check are not proof of these facts.
+   Audit summaries must resolve actual commit Authors, not assign every carried
+   email to the PR opener. Until a reporting tool supports mixed authors, use
+   the per-commit manifest and do not present its aggregate as credit proof.
 5. Preserved conventional commits may produce multiple release-note entries.
    Inspect the next generated Release Please PR for duplicates, missing work
    and unintended version directives; do not rewrite author history to tidy
