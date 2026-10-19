@@ -30,16 +30,33 @@ PRs plus two scrub release PRs across six managed repositories. All five scrub
 repos have zero open issues/contributor PRs. The original dirty desktop checkout
 was preserved. [Detailed queue, exact heads and review findings](evidence/backlog-20261018/README.md).
 
-- Corrections in progress on contributors' own PRs: #1411 all-hidden provider URL
-  reload, #1410 schema-order-sensitive shared tool definitions, and #1396 durable
-  system-instruction lineage safety. No cherry-picked integration PRs.
+- Signed corrections pushed on existing contributor PRs: #1411 `bd08c43d`
+  all-hidden provider URL reload, #1410 `423477f1` schema-order-sensitive shared
+  tool definitions, and #1396 `db52bfd0`/`a40be179` durable system-instruction
+  lineage safety plus a discriminating client gate. No maintainer integration PRs.
+  #1410 full local 6,948 pass and final-head CI green; #1396 full local 6,961
+  pass with final-head CI pending. Their actual-client/model/heap gates remain.
+  #1411 passes 50 focused/browser/type/build checks and corrected-head CI,
+  but full local has 90 unresolved failures and must not merge.
 - #1409's cleanup change passes independent safety review, 21 focused tests,
   typecheck/build and a discriminating unchanged-main/candidate leak probe.
-  Full local suite has failures under investigation; isolated passing controls
+  Full local suite exits red on Bun 1.3.14 (4 failures) and pinned 1.3.11
+  (1 failure); unchanged main is red too (1 failure). Isolated passing controls
   are not treated as a repaired full gate.
-- #1398 warning is being validated through actual Bun and Node startup. Eight
-  forwarded PRs #1394–#1401 carry another verified contributor's source commits;
-  source-Author policy needs owner handling before any of those merges.
+- #1398 warning passes actual Bun/Node startup/transport controls; its full
+  local suite has four unresolved failures. Eight forwarded PRs #1394–#1401
+  carry another verified contributor's source commits. The owner requires true
+  Author credit. The owner explicitly approved the commit-preserving route for
+  #1394–#1401 on 2026-10-18 MDT / 2026-10-19 UTC, with all normal tests, live,
+  CI and signature gates retained. The independently reviewed workflow change
+  [#1413](https://github.com/rynfar/meridian/pull/1413) is ready at `15f35f17`,
+  awaiting final-head CI before adoption. Refresh its status and the per-commit
+  manifest before any product merge; approval does not waive acceptance gates.
+- Isolated follow-up tasks are running actual Claude Code/Fable acceptance for
+  #1396 and matching-plugin OpenCode plus bounded SDK heap/cache acceptance for
+  #1410. Their results are pending, not completed live proof.
+  A separate #1399 task is correcting the active-sweep/idle-close interleaving;
+  correction and local checks are pending, with no actual-model load run claimed.
 - #1407/#1403 source review is favorable but actual affected-client/model proof
   remains open. #1406 needs truthful settings documentation and resumed-session
   isolation proof. #1399 shutdown sweep and #1400 effective Retry-After need
