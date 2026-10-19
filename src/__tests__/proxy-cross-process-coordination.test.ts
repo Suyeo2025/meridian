@@ -7,6 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 
 const testDir = dirname(fileURLToPath(import.meta.url))
 const serverModule = pathToFileURL(resolve(testDir, "../proxy/server.ts")).href
+const sdkMockModule = pathToFileURL(resolve(testDir, "sdkMock.ts")).href
 const sessionStoreModule = pathToFileURL(resolve(testDir, "../proxy/sessionStore.ts")).href
 
 // Each worker is a separate Bun OS process with its own module graph and
@@ -48,7 +49,8 @@ mock.module(process.env.SESSION_STORE_MODULE, () => ({
   },
 }))
 
-mock.module("@anthropic-ai/claude-agent-sdk", () => ({
+const { setSdkMock, sdkMockQuery, assertSyntheticClaudeBoundary } = await import(process.env.SDK_MOCK_MODULE)
+setSdkMock(() => ({
   query: (params) => {
     const call = ++queryCall
     const resume = params?.options?.resume ?? null
@@ -138,6 +140,9 @@ mock.module("@anthropic-ai/claude-agent-sdk", () => ({
   tool: () => ({}),
 }))
 
+const sdk = await import("@anthropic-ai/claude-agent-sdk")
+if (sdk.query !== sdkMockQuery) throw new Error("SDK worker mock identity was not installed")
+await assertSyntheticClaudeBoundary()
 const { createProxyServer } = await import(process.env.SERVER_MODULE)
 const app = createProxyServer({ port: 0, host: "127.0.0.1", silent: true }).app
 const request = new Request("http://localhost/v1/messages", {
@@ -231,6 +236,7 @@ function spawnProxyWorker(
     env: {
       ...process.env,
       SERVER_MODULE: serverModule,
+      SDK_MOCK_MODULE: sdkMockModule,
       SESSION_STORE_MODULE: sessionStoreModule,
       MERIDIAN_SESSION_DIR: paths.sessions,
       MERIDIAN_PASSTHROUGH: options.passthrough ? "1" : "0",
