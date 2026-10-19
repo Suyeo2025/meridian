@@ -138,9 +138,18 @@ export function stripAdvisorTools(tools: unknown[]): unknown[] {
 }
 
 /**
- * Extract only the last user message (for session resume — SDK already has history).
+ * Extract the current user turn (for session resume — SDK already has history).
  */
 export function getLastUserMessage(messages: Array<{ role: string; content: any }>): Array<{ role: string; content: any }> {
+  // Coalescing applies to an incoming user tail. Keep the existing last-user
+  // fallback when a history ends with an assistant/prefill instead; treating
+  // that assistant text as new user input changes an unrelated resume path.
+  if (messages[messages.length - 1]?.role !== "user") {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i]?.role === "user") return [messages[i]!]
+    }
+    return messages.slice(-1)
+  }
   // Everything after the last assistant turn is the current turn. A client may
   // send several consecutive user messages (memory, question, runtime context);
   // returning only the last one treated the rest as history and dropped their

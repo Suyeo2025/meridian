@@ -141,6 +141,19 @@ describe("getLastUserMessage", () => {
       { type: "text", text: "<system-reminder>be concise</system-reminder>" },
     ])
   })
+
+  it("preserves the last-user fallback for assistant-ending history", () => {
+    const question = { role: "user", content: "continue the explanation" }
+    const prefill = { role: "assistant", content: "The next step is" }
+    expect(getLastUserMessage([question, prefill])).toEqual([question])
+  })
+
+  it("preserves the existing assistant-ending fallback when earlier users are consecutive", () => {
+    const earlier = { role: "user", content: "background" }
+    const question = { role: "user", content: "current question" }
+    const prefill = { role: "assistant", content: "The answer is" }
+    expect(getLastUserMessage([earlier, question, prefill])).toEqual([question])
+  })
 })
 
 describe("extractAdvisorModel", () => {
